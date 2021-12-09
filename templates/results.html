@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Upload new File</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>File Submited</h1>
+    <p>{{image_path}}</p>
+    <div>
+      <img src="{{image_path}}" />
+    </div>
+    <h1>Rappel / Decision</h1>
+    <canvas id="chart" width="500" height="500"></canvas>
+    <script>
+      var ctx = document.getElementById("chart").getContext("2d");
+      var lineChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: {{ rappel | safe }},
+          datasets: [
+            {
+              label: "R/P neighbors of image {{image_path}}",
+              data: {{ precision | safe }},
+              fill: false,
+              borderColor: "rgb(75, 192, 192)",
+              lineTension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: false
+        }
+      });
+    </script>
+    <h1>Images Returned</h1>
+    <div>
+      {% for i in range(number_of_neighbors) %}
+      <img src="{{neighbors_path[i]}}" />
+      {% endfor %}
+    </div>
+  </body>
+</html>
