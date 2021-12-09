@@ -41,7 +41,7 @@ def load_features(descriptor):
     return features
 
 
-def search(file_name, features, descriptor):
+def search(file_name, features, descriptor, distanceName):
     neighbors = ""
     # the second argument is the chosen algorithm
     # in this case it's 1 because it corresponds to the BGR algorithm
@@ -50,10 +50,10 @@ def search(file_name, features, descriptor):
     number_of_neighbors = 50
     # generates neighbors
     # distance name can be changed too as requested by the user
-    if descriptor == 3 or descriptor == 4:
-        distanceName = "Brute force"
-    else:
-        distanceName = "Bhattacharyya"
+    # if descriptor == 3 or descriptor == 4:
+    #     distanceName = "Brute force"
+    # else:
+    #     distanceName = "Bhattacharyya"
     neighbors = getkVoisins(features, req, number_of_neighbors, distanceName)
     neighbor_names = []
     for k in range(number_of_neighbors):
@@ -101,13 +101,16 @@ def rappel_precision(file_name, neighbors):
 def research():
     if request.method == "POST":
 
+        # TODO: check post validity
+
         file_name_tmp = request.form["file-name"]
         file_name = "./static/" + file_name_tmp
 
         # TODO: check file_name validity
 
-        descriptor = 0
-        print(request.form["descriptor"])
+        # default descriptor is BRG
+        descriptor = 1
+        # gets descriptor id
         if (request.form["descriptor"] == "BRG"):
             descriptor = 1
         elif (request.form["descriptor"] == "HSV"):
@@ -116,14 +119,23 @@ def research():
             descriptor = 3
         elif (request.form["descriptor"] == "ORB"):
             descriptor = 4
-        else:
-            return render_template("index.html")
+
+        # gets distance
+        distance = ""
+        if (descriptor == 1):
+            distance = request.form["brg-distance"]
+        elif (descriptor == 2):
+            distance = request.form["hsv-distance"]
+        elif (descriptor == 3):
+            distance = request.form["sift-distance"]
+        elif (descriptor == 4):
+            distance = request.form["orb-distance"]
 
         # loads features
         features = load_features(descriptor)
 
         # gets top 50 images
-        neighbors = search(file_name, features, descriptor)
+        neighbors = search(file_name, features, descriptor, distance)
 
         # calculates rappel and precision
         rappels_precisions = rappel_precision(file_name, neighbors)

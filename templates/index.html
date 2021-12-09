@@ -9,17 +9,44 @@
   <h1>Choose image</h1>
   <form method=post enctype=multipart/form-data>
     <input type=text name=file-name>
-    <p>Please select your descriptor:</p>
-    <input type="radio" id="brg" name="descriptor" value="BRG">
-    <label for="brg">BRG</label><br>
-    <input type="radio" id="hsv" name="descriptor" value="HSV">
-    <label for="hsv">HSV</label><br>
-    <input type="radio" id="orb" name="descriptor" value="ORB">
-    <label for="orb">ORB</label><br>
-    <input type="radio" id="sift" name="descriptor" value="SIFT">
-    <label for="sift">SIFT</label><br>
+    <h1>Please select your descriptor:</h1>
+    <div>
+      <input type="radio" id="brg" name="descriptor" value="BRG" checked>
+      <label for="brg">BRG</label><br>
+      <select name="brg-distance" id="brg-distance">
+        <option value="Euclidienne">Euclidienne</option>
+        <option value="Bhattacharyya">Bhattacharyya</option>
+      </select>
+    </div>
+    <div>
+      <input type="radio" id="hsv" name="descriptor" value="HSV">
+      <label for="hsv">HSV</label><br>
+      <select name="hsv-distance" id="hsv-distance">
+        <option value="Euclidienne">Euclidienne</option>
+        <option value="Bhattacharyya">Bhattacharyya</option>
+      </select>
+    </div>
+    <div>
+      <input type="radio" id="orb" name="descriptor" value="ORB">
+      <label for="orb">ORB</label><br>
+      <select name="orb-distance" id="orb-distance">
+        <option value="Brute force">Brute Force</option>
+        <option value="Flann">Flann</option>
+      </select>
+    </div>
+    <div>
+      <input type="radio" id="sift" name="descriptor" value="SIFT">
+      <label for="sift">SIFT</label><br>
+      <select name="sift-distance" id="sift-distance">
+        <option value="Brute force">Brute Force</option>
+        <option value="Flann">Flann</option>
+      </select>
+    </div>
+    <br>
     <input type=submit value=Upload>
   </form>
+  <p>Note: if you input your options incorrectly the algorithm will default to RGB descriptors and Euclidienne distance
+  </p>
 </body>
 
 </html>
