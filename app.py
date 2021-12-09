@@ -15,9 +15,19 @@ app = Flask(__name__)
 filenames = './static'
 
 
-def load_features():
-    # this will eventually change and have options to choose other descriptors
-    folder_model = './descriptors/BGR'
+def load_features(descriptor):
+
+    # checks which descriptor will run
+    folder_model = ''
+    if (descriptor == 1):
+        folder_model = './descriptors/BGR'
+    elif (descriptor == 2):
+        folder_model = './descriptors/HSV'
+    elif (descriptor == 3):
+        folder_model = './descriptors/SIFT'
+    elif (descriptor == 4):
+        folder_model = './descriptors/ORB'
+
     features = []
     print("Loading features...")
     # extracts features from the chosen descriptors
@@ -31,16 +41,19 @@ def load_features():
     return features
 
 
-def search(file_name, features):
+def search(file_name, features, descriptor):
     neighbors = ""
     # the second argument is the chosen algorithm
     # in this case it's 1 because it corresponds to the BGR algorithm
-    req = extractReqFeatures(file_name, 1)
+    req = extractReqFeatures(file_name, descriptor)
     # defines number of neighbors
-    number_of_neighbors = 10
+    number_of_neighbors = 50
     # generates neighbors
     # distance name can be changed too as requested by the user
-    distanceName = "Bhattacharyya"
+    if descriptor == 3 or descriptor == 4:
+        distanceName = "Brute force"
+    else:
+        distanceName = "Bhattacharyya"
     neighbors = getkVoisins(features, req, number_of_neighbors, distanceName)
     neighbor_names = []
     for k in range(number_of_neighbors):
@@ -87,28 +100,33 @@ def rappel_precision(file_name, neighbors):
 @app.route('/', methods=["POST", "GET"])
 def research():
     if request.method == "POST":
+
         file_name_tmp = request.form["file-name"]
         file_name = "./static/" + file_name_tmp
 
+        # TODO: check file_name validity
+
+        descriptor = 0
+        print(request.form["descriptor"])
+        if (request.form["descriptor"] == "BRG"):
+            descriptor = 1
+        elif (request.form["descriptor"] == "HSV"):
+            descriptor = 2
+        elif (request.form["descriptor"] == "SIFT"):
+            descriptor = 3
+        elif (request.form["descriptor"] == "ORB"):
+            descriptor = 4
+        else:
+            return render_template("index.html")
+
         # loads features
-        features = load_features()
+        features = load_features(descriptor)
 
         # gets top 50 images
-        neighbors = search(file_name, features)
+        neighbors = search(file_name, features, descriptor)
 
         # calculates rappel and precision
         rappels_precisions = rappel_precision(file_name, neighbors)
-
-        # # Création de la courbe R/P
-        # plt.plot(rappels_precisions[0], rappels_precisions[1])
-        # plt.xlabel("Recall")
-        # plt.ylabel("Precision")
-        # plt.title("R/P"+str(len(neighbors)) + " voisins de l'image n°"+file_name[9])
-
-        # # Enregistrement de la courbe RP
-        # plot_path = './static/plot.png'
-        # plt.savefig(plot_path)
-        # plt.close()
 
         return render_template("results.html", image_path=file_name, neighbors_path=neighbors, rappel=rappels_precisions[0], precision=rappels_precisions[1], number_of_neighbors=len(neighbors))
     else:

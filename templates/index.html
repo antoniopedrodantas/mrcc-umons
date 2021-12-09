@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Upload new File</title>
-    </head>
-    <body>
-    <h1>Choose image</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=tetx name=file-name>
-      <input type=submit value=Upload>
-    </form>
-    </body>
+
+<head>
+  <title>Upload new File</title>
+</head>
+
+<body>
+  <h1>Choose image</h1>
+  <form method=post enctype=multipart/form-data>
+    <input type=text name=file-name>
+    <p>Please select your descriptor:</p>
+    <input type="radio" id="brg" name="descriptor" value="BRG">
+    <label for="brg">BRG</label><br>
+    <input type="radio" id="hsv" name="descriptor" value="HSV">
+    <label for="hsv">HSV</label><br>
+    <input type="radio" id="orb" name="descriptor" value="ORB">
+    <label for="orb">ORB</label><br>
+    <input type="radio" id="sift" name="descriptor" value="SIFT">
+    <label for="sift">SIFT</label><br>
+    <input type=submit value=Upload>
+  </form>
+</body>
+
 </html>
