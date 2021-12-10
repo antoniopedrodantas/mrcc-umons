@@ -124,7 +124,10 @@ def rappel_precision(file_name, neighbors):
     classe_image_requete = int(num_image)/100
     val = 0
     for j in range(number_of_neighbors):
-        image_number = neighbors[j].replace("./static/", "")
+        if os.name != "nt":
+            image_number = neighbors[j].replace("./static/", "")
+        else :
+            image_number = neighbors[j].replace("./static\\", "")
         classe_image_proche = (int(image_number.split('.')[0]))/100
         classe_image_requete = int(classe_image_requete)
         classe_image_proche = int(classe_image_proche)
