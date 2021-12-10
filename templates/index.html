@@ -6,47 +6,51 @@
 </head>
 
 <body>
-  <h1>Choose image</h1>
   <form method=post enctype=multipart/form-data>
+    <h1>Choose image</h1>
     <input type=text name=file-name>
+    <label for="results">Choose number of results:</label>
+    <select name="results" id="results">
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
     <h1>Please select your descriptor:</h1>
     <div>
-      <input type="radio" id="brg" name="descriptor" value="BRG" checked>
+      <input type="checkbox" id="brg" name="descriptor_brg" value="BRG" checked>
       <label for="brg">BRG</label><br>
-      <select name="brg-distance" id="brg-distance">
-        <option value="Euclidienne">Euclidienne</option>
-        <option value="Bhattacharyya">Bhattacharyya</option>
-      </select>
     </div>
     <div>
-      <input type="radio" id="hsv" name="descriptor" value="HSV">
+      <input type="checkbox" id="hsv" name="descriptor_hsv" value="HSV">
       <label for="hsv">HSV</label><br>
-      <select name="hsv-distance" id="hsv-distance">
-        <option value="Euclidienne">Euclidienne</option>
-        <option value="Bhattacharyya">Bhattacharyya</option>
-      </select>
     </div>
     <div>
-      <input type="radio" id="orb" name="descriptor" value="ORB">
-      <label for="orb">ORB</label><br>
-      <select name="orb-distance" id="orb-distance">
-        <option value="Brute force">Brute Force</option>
-        <option value="Flann">Flann</option>
-      </select>
+      <input type="checkbox" id="glcm" name="descriptor_glcm" value="GLCM">
+      <label for="glcm">GLCM</label><br>
     </div>
     <div>
-      <input type="radio" id="sift" name="descriptor" value="SIFT">
-      <label for="sift">SIFT</label><br>
-      <select name="sift-distance" id="sift-distance">
-        <option value="Brute force">Brute Force</option>
-        <option value="Flann">Flann</option>
-      </select>
+      <input type="checkbox" id="hog" name="descriptor_hog" value="HOG">
+      <label for="hog">HOG</label><br>
+    </div>
+    <div>
+      <input type="checkbox" id="lbp" name="descriptor_lbp" value="LBP">
+      <label for="lbp">LBP</label><br>
+    </div>
+    <h1>Please select your distance method:</h1>
+    <div>
+      <div>
+        <input type="radio" id="euc" name="distance" value="Euclidienne" checked>
+        <label for="euc">Euclidienne</label><br>
+      </div>
+      <div>
+        <input type="radio" id="bhatta" name="distance" value="Bhattacharyya">
+        <label for="bhatta">Bhattacharyya</label><br>
+      </div>
     </div>
     <br>
     <input type=submit value=Upload>
   </form>
-  <p>Note: if you input your options incorrectly the algorithm will default to RGB descriptors and Euclidienne distance
-  </p>
 </body>
 
 </html>

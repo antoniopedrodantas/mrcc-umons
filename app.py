@@ -1,77 +1,129 @@
+# flask imports
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
-from src.functions import extractReqFeatures
-from src.distances import *
-
+# other library imports
 import os
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+
+# imports from src files
+from src.functions import extractReqFeatures
+from src.distances import *
 
 app = Flask(__name__)
 
 # tells where the image folder is
 filenames = './static'
 
+# function combines all image descriptors chosen
+def concat_db_features(features):
 
-def load_features(descriptor):
+    # instanciates new concatenated features
+    new_features = []
 
-    # checks which descriptor will run
-    folder_model = ''
-    if (descriptor == 1):
-        folder_model = './descriptors/BGR'
-    elif (descriptor == 2):
-        folder_model = './descriptors/HSV'
-    elif (descriptor == 3):
-        folder_model = './descriptors/SIFT'
-    elif (descriptor == 4):
-        folder_model = './descriptors/ORB'
+    # adds instance of every image
+    for elem in features[0]:
+        new_features.append([elem[0], []])
 
-    features = []
-    print("Loading features...")
-    # extracts features from the chosen descriptors
-    for j in os.listdir(folder_model):
-        data = os.path.join(folder_model, j)
-        if not data.endswith(".txt"):
-            continue
-        feature = np.loadtxt(data)
-        features.append(
-            (os.path.join(filenames, os.path.basename(data).split('.')[0]+'.jpg'), feature))
-    return features
+    # adds concatenation of every chosen descriptor to the desired image
+    for i in range(len(features)):
+        # holds every image feature for the chosen descriptor
+        descriptor = features[i]
+        for j in range(len(descriptor)):
+            # concatenates what was already there with the new descriptor
+            new_features[j][1] = np.concatenate((new_features[j][1], descriptor[j][1]), axis=None)
+    return new_features
 
+# loads feautures of every image
+def load_features(descriptors):
 
-def search(file_name, features, descriptor, distanceName):
-    neighbors = ""
-    # the second argument is the chosen algorithm
-    # in this case it's 1 because it corresponds to the BGR algorithm
-    req = extractReqFeatures(file_name, descriptor)
-    # defines number of neighbors
-    number_of_neighbors = 50
-    # generates neighbors
-    # distance name can be changed too as requested by the user
-    # if descriptor == 3 or descriptor == 4:
-    #     distanceName = "Brute force"
-    # else:
-    #     distanceName = "Bhattacharyya"
-    neighbors = getkVoisins(features, req, number_of_neighbors, distanceName)
+    # initializes array that will hold every image features for the chosen descriptors
+    features_descriptors = []
+
+    for descriptor in descriptors:
+        # checks which descriptor will run
+        folder_model = ''
+        if (descriptor == 1):
+            folder_model = './descriptors/BGR'
+            print("Loading BGR features...")
+        elif (descriptor == 2):
+            folder_model = './descriptors/HSV'
+            print("Loading HSV features...")
+        elif (descriptor == 3):
+            folder_model = './descriptors/SIFT'
+            print("Loading SIFT features...")
+        elif (descriptor == 4):
+            folder_model = './descriptors/ORB'
+            print("Loading ORB features...")
+        elif (descriptor == 5):
+            folder_model = './descriptors/GLCM'
+            print("Loading GLCM features...")
+        elif (descriptor == 6):
+            folder_model = './descriptors/HOG'
+            print("Loading HOG features...")
+        elif (descriptor == 7):
+            folder_model = './descriptors/LBP'
+            print("Loading LBP features...")
+
+        features = []
+        # extracts features from the chosen descriptors
+        for j in os.listdir(folder_model):
+            data = os.path.join(folder_model, j)
+            if not data.endswith(".txt"):
+                continue
+            feature = np.loadtxt(data)
+            features.append(
+                (os.path.join(filenames, os.path.basename(data).split('.')[0]+'.jpg'), feature))
+        
+        # appends features from one descriptor
+        features_descriptors.append(features)
+    
+    return features_descriptors
+
+# searches the most similar images
+def search(file_name, features, descriptor, distanceName, results):
+    
+    # neighbors = ""
+
+    # gets requested image features for every descriptor chosen
+    req_features = []
+    for elem in descriptor:
+        req = extractReqFeatures(file_name, elem)
+        req_features.append(req)
+    
+    # concatenates those features
+    concat_req_features = []
+    for elem in req_features:
+        concat_req_features = np.concatenate((concat_req_features, elem), axis=None)
+
+    # gets the k most similar neighbors
+    neighbors = getkVoisins(features, concat_req_features, results, distanceName)
+
+    # gets results names to display on the next webpage
     neighbor_names = []
-    for k in range(number_of_neighbors):
+    for k in range(results):
         neighbor_names.append(neighbors[k][0])
+
     return neighbor_names
 
-
+# gets array of rappel and precision to draw the chart on the next webpage
 def rappel_precision(file_name, neighbors):
+    
+    # gets number of neighbors
     number_of_neighbors = len(neighbors)
+    # instanciates rappel precision variables
     rappel_precision = []
     rappels = []
     precisions = []
+
+    # gets array of how many images correspond to the same thing and how many don't
     filename_req = os.path.basename(file_name)
     num_image, _ = filename_req.split(".")
     classe_image_requete = int(num_image)/100
     val = 0
     for j in range(number_of_neighbors):
-        # will probably need to change the 9 for the other database
         image_number = neighbors[j].replace("./static/", "")
         classe_image_proche = (int(image_number.split('.')[0]))/100
         classe_image_requete = int(classe_image_requete)
@@ -88,11 +140,12 @@ def rappel_precision(file_name, neighbors):
             if rappel_precision[j]:
                 val += 1
             j -= 1
+        # gets precision
         precision = (val/(i+1))*100
+        #gets rappel
         rappel = (val/number_of_neighbors)*100
         rappels.append(rappel)
         precisions.append(precision)
-
 
     return [rappels, precisions]
 
@@ -101,41 +154,42 @@ def rappel_precision(file_name, neighbors):
 def research():
     if request.method == "POST":
 
-        # TODO: check post validity
+        # checks post validity
+        if (request.form.get("file-name") == ""):
+            return render_template("index.html")
 
         file_name_tmp = request.form["file-name"]
         file_name = "./static/" + file_name_tmp
 
         # TODO: check file_name validity
 
-        # default descriptor is BRG
-        descriptor = 1
-        # gets descriptor id
-        if (request.form["descriptor"] == "BRG"):
-            descriptor = 1
-        elif (request.form["descriptor"] == "HSV"):
-            descriptor = 2
-        elif (request.form["descriptor"] == "SIFT"):
-            descriptor = 3
-        elif (request.form["descriptor"] == "ORB"):
-            descriptor = 4
+        # gets number of desired results
+        results = int(request.form.get("results"))
+
+        # gets descriptors
+        descriptor = []
+        if (request.form.get("descriptor_brg") == "BRG"):
+            descriptor.append(1)
+        if (request.form.get("descriptor_hsv") == "HSV"):
+            descriptor.append(2)
+        if (request.form.get("descriptor_glcm") == "GLCM"):
+            descriptor.append(5)
+        if (request.form.get("descriptor_hog") == "HOG"):
+            descriptor.append(6)
+        if (request.form.get("descriptor_lbp") == "LBP"):
+            descriptor.append(7)
 
         # gets distance
-        distance = ""
-        if (descriptor == 1):
-            distance = request.form["brg-distance"]
-        elif (descriptor == 2):
-            distance = request.form["hsv-distance"]
-        elif (descriptor == 3):
-            distance = request.form["sift-distance"]
-        elif (descriptor == 4):
-            distance = request.form["orb-distance"]
+        distance = request.form["distance"]
 
         # loads features
         features = load_features(descriptor)
 
-        # gets top 50 images
-        neighbors = search(file_name, features, descriptor, distance)
+        # concatenates features for all descriptors
+        new_features = concat_db_features(features)
+
+        # gets top n results
+        neighbors = search(file_name, new_features, descriptor, distance, results)
 
         # calculates rappel and precision
         rappels_precisions = rappel_precision(file_name, neighbors)
