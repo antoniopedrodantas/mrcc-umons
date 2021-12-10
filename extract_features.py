@@ -47,23 +47,23 @@ def generateHistogramme_Color(filenames):
     print("indexation Hist Couleur terminée !!!!")
 
 
-def generateSIFT(filenames):
-    if not os.path.isdir("./descriptors/SIFT"):
-        os.mkdir("./descriptors/SIFT")
-    i = 0
-    for path in os.listdir(filenames):
-        img = cv2.imread(filenames+"/"+path)
-        featureSum = 0
-        sift = cv2.SIFT_create()
-        kps, des = sift.detectAndCompute(img, None)
+# def generateSIFT(filenames):
+#     if not os.path.isdir("./descriptors/SIFT"):
+#         os.mkdir("./descriptors/SIFT")
+#     i = 0
+#     for path in os.listdir(filenames):
+#         img = cv2.imread(filenames+"/"+path)
+#         featureSum = 0
+#         sift = cv2.SIFT_create()
+#         kps, des = sift.detectAndCompute(img, None)
 
-        num_image, _ = path.split(".")
-        with open("./descriptors/SIFT/"+str(num_image)+".txt", 'w+') as f:
-            np.savetxt(f ,des)
+#         num_image, _ = path.split(".")
+#         with open("./descriptors/SIFT/"+str(num_image)+".txt", 'w+') as f:
+#             np.savetxt(f ,des)
 
-        featureSum += len(kps)
-        i += 1
-    print("Indexation SIFT terminée !!!!")
+#         featureSum += len(kps)
+#         i += 1
+#     print("Indexation SIFT terminée !!!!")
 
 
 def generateORB(filenames):
@@ -163,5 +163,6 @@ generateGLCM("./static")
 generateORB("./static")
 generateLBP("./static")
 generateHistogramme_Color("./static")
-generateSIFT("./static")
+# Be careful with this line!
+# generateSIFT("./static")
 generateHistogramme_HSV("./static")

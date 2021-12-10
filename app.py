@@ -84,8 +84,6 @@ def load_features(descriptors):
 
 # searches the most similar images
 def search(file_name, features, descriptor, distanceName, results):
-    
-    # neighbors = ""
 
     # gets requested image features for every descriptor chosen
     req_features = []
@@ -121,14 +119,16 @@ def rappel_precision(file_name, neighbors):
     # gets array of how many images correspond to the same thing and how many don't
     filename_req = os.path.basename(file_name)
     num_image, _ = filename_req.split(".")
-    classe_image_requete = int(num_image)/100
+    # classe_image_requete = int(num_image)/100
+    classe_image_requete = int(num_image[0])
     val = 0
     for j in range(number_of_neighbors):
         if os.name != "nt":
             image_number = neighbors[j].replace("./static/", "")
         else :
             image_number = neighbors[j].replace("./static\\", "")
-        classe_image_proche = (int(image_number.split('.')[0]))/100
+        # classe_image_proche = (int(image_number.split('.')[0]))/100
+        classe_image_proche = int(image_number.split('.')[0][0])
         classe_image_requete = int(classe_image_requete)
         classe_image_proche = int(classe_image_proche)
         if classe_image_requete == classe_image_proche:
