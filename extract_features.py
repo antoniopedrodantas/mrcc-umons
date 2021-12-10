@@ -158,11 +158,11 @@ def generateHOG(filenames):
     print("indexation HOG terminée !!!!")
 
 
-generateHOG("./static")
-generateGLCM("./static")
-generateORB("./static")
-generateLBP("./static")
 generateHistogramme_Color("./static")
-# Be careful with this line!
-# generateSIFT("./static")
 generateHistogramme_HSV("./static")
+# Be careful with these lines!
+# generateSIFT("./static")
+# generateORB("./static")
+generateGLCM("./static")
+generateHOG("./static")
+generateLBP("./static")
