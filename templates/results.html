@@ -1,47 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Upload new File</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-    </ul>
-    <h1>File Submited</h1>
-    <p>{{image_path}}</p>
+
+<head>
+  <title>Upload new File</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+</head>
+
+<body>
+  <ul class="navbar">
+    <li class="navbar-elem"><a href="/">App</a></li>
+    <li class="navbar-elem"><a href="/about">About</a></li>
+  </ul>
+  <div class="descriptor-distance-wrapper">
     <div>
-      <img src="{{image_path}}" />
+      <h1 class="choose-image">File Submited</h1>
+      <p class="choose-image">{{image_path}}</p>
+      <div>
+        <img src="{{image_path}}" />
+      </div>
     </div>
-    <h1>Rappel / Decision</h1>
-    <canvas id="chart" width="500" height="500"></canvas>
-    <script>
-      var ctx = document.getElementById("chart").getContext("2d");
-      var lineChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: {{ rappel | safe }},
-          datasets: [
-            {
-              label: "R/P neighbors of image {{image_path}}",
-              data: {{ precision | safe }},
-              fill: false,
-              borderColor: "rgb(75, 192, 192)",
-              lineTension: 0.1
+    <div>
+      <h1 class="choose-image">Rappel / Decision</h1>
+      <canvas id="chart" width="500" height="500"></canvas>
+      <script>
+        var ctx = document.getElementById("chart").getContext("2d");
+        var lineChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: {{ rappel | safe }},
+        datasets: [
+          {
+            label: "R/P neighbors of image {{image_path}}",
+            data: {{ precision | safe }},
+          fill: false,
+          borderColor: "rgb(75, 192, 192)",
+          lineTension: 0.1
             }
-          ]
+        ]
         },
         options: {
           responsive: false
         }
       });
-    </script>
-    <h1>Images Returned</h1>
-    <div>
+      </script>
+    </div>
+  </div>
+  <h1 class="choose-image">Images Returned</h1>
+  <div class="choose-image">
+    <div class="results-wrapper">
       {% for i in range(number_of_neighbors) %}
-      <img src="{{neighbors_path[i]}}" />
+      <div class="result">
+        <img src="{{neighbors_path[i]}}" />
+      </div>
       {% endfor %}
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

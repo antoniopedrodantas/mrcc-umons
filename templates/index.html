@@ -3,57 +3,78 @@
 
 <head>
   <title>Upload new File</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
 </head>
 
 <body>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
+  <ul class="navbar">
+    <li class="navbar-elem"><a href="/">App</a></li>
+    <li class="navbar-elem"><a href="/about">About</a></li>
   </ul>
   <form method=post enctype=multipart/form-data>
-    <h1>Choose image</h1>
-    <input type=text name=file-name>
-    <label for="results">Choose number of results:</label>
-    <select name="results" id="results">
-      <option value="10">10</option>
-      <option value="25">25</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-    </select>
-    <h1>Please select your descriptor:</h1>
-    <div>
-      <input type="checkbox" id="brg" name="descriptor_brg" value="BRG" checked>
-      <label for="brg">BRG</label><br>
-    </div>
-    <div>
-      <input type="checkbox" id="hsv" name="descriptor_hsv" value="HSV">
-      <label for="hsv">HSV</label><br>
-    </div>
-    <div>
-      <input type="checkbox" id="glcm" name="descriptor_glcm" value="GLCM">
-      <label for="glcm">GLCM</label><br>
-    </div>
-    <div>
-      <input type="checkbox" id="hog" name="descriptor_hog" value="HOG">
-      <label for="hog">HOG</label><br>
-    </div>
-    <div>
-      <input type="checkbox" id="lbp" name="descriptor_lbp" value="LBP">
-      <label for="lbp">LBP</label><br>
-    </div>
-    <h1>Please select your distance method:</h1>
-    <div>
-      <div>
-        <input type="radio" id="euc" name="distance" value="Euclidienne" checked>
-        <label for="euc">Euclidienne</label><br>
+    <div class="choose-image">
+      <div class="choose-image-text">
+        <h1>Choose image</h1>
       </div>
       <div>
-        <input type="radio" id="bhatta" name="distance" value="Bhattacharyya">
-        <label for="bhatta">Bhattacharyya</label><br>
+        <input type=text name=file-name size="75">
       </div>
     </div>
-    <br>
-    <input type=submit value=Upload>
+    <div class="choose-image">
+      <div class="number-of-results">
+        <label for="results">Choose number of results:</label>
+      </div>
+      <div>
+        <select name="results" id="results">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+    <div class="descriptor-distance-wrapper">
+      <div class="descriptor-distance-elem">
+        <h1>Please select your descriptor:</h1>
+        <div>
+          <input type="checkbox" id="brg" name="descriptor_brg" value="BRG" checked>
+          <label for="brg">BRG</label><br>
+        </div>
+        <div>
+          <input type="checkbox" id="hsv" name="descriptor_hsv" value="HSV">
+          <label for="hsv">HSV</label><br>
+        </div>
+        <div>
+          <input type="checkbox" id="glcm" name="descriptor_glcm" value="GLCM">
+          <label for="glcm">GLCM</label><br>
+        </div>
+        <div>
+          <input type="checkbox" id="hog" name="descriptor_hog" value="HOG">
+          <label for="hog">HOG</label><br>
+        </div>
+        <div>
+          <input type="checkbox" id="lbp" name="descriptor_lbp" value="LBP">
+          <label for="lbp">LBP</label><br>
+        </div>
+      </div>
+      <div class="descriptor-distance-elem">
+        <h1>Please select your distance method:</h1>
+        <div>
+          <div>
+            <input type="radio" id="euc" name="distance" value="Euclidienne" checked>
+            <label for="euc">Euclidienne</label><br>
+          </div>
+          <div>
+            <input type="radio" id="bhatta" name="distance" value="Bhattacharyya">
+            <label for="bhatta">Bhattacharyya</label><br>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+    <div class="choose-image">
+      <input type=submit value=Search class="button">
+    </div>
   </form>
 </body>
 

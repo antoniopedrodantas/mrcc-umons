@@ -174,11 +174,11 @@ def generateHOG(filenames):
     print("Finished HOG indexation (4/5)")
 
 
-generateHistogramme_Color("./static")
-generateHistogramme_HSV("./static")
+generateHistogramme_Color("./static/dataset")
+generateHistogramme_HSV("./static/dataset")
 # Be careful with these lines!
-# generateSIFT("./static")
-# generateORB("./static")
-generateGLCM("./static")
-generateHOG("./static")
-generateLBP("./static")
+# generateSIFT("./static/dataset")
+# generateORB("./static/dataset")
+generateGLCM("./static/dataset")
+generateHOG("./static/dataset")
+generateLBP("./static/dataset")

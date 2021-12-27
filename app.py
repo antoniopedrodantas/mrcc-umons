@@ -15,7 +15,7 @@ from src.distances import *
 app = Flask(__name__)
 
 # tells where the image folder is
-filenames = './static'
+filenames = './static/dataset'
 
 # function combines all image descriptors chosen
 def concat_db_features(features):
@@ -124,9 +124,9 @@ def rappel_precision(file_name, neighbors):
     val = 0
     for j in range(number_of_neighbors):
         if os.name != "nt":
-            image_number = neighbors[j].replace("./static/", "")
+            image_number = neighbors[j].replace("./static/dataset/", "")
         else :
-            image_number = neighbors[j].replace("./static\\", "")
+            image_number = neighbors[j].replace("./static/dataset\\", "")
         # classe_image_proche = (int(image_number.split('.')[0]))/100
         classe_image_proche = int(image_number.split('.')[0][0])
         classe_image_requete = int(classe_image_requete)
@@ -162,7 +162,7 @@ def research():
             return render_template("index.html")
 
         file_name_tmp = request.form["file-name"]
-        file_name = "./static/" + file_name_tmp
+        file_name = "./static/dataset/" + file_name_tmp
 
         # TODO: check file_name validity
 
