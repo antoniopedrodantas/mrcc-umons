@@ -9,10 +9,10 @@ a {
   color: #8ee4af;
 }
 
-img{
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
+img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
 }
 
 .navbar {
@@ -27,8 +27,8 @@ img{
 
 .navbar-elem {
   display: block;
-  color: white;
   margin-left: 2rem;
+  font-size: 20px;
 }
 
 .choose-image {
@@ -72,9 +72,78 @@ img{
 
 .results-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .result {
-    margin: 1rem;
+  margin: 1rem;
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 2rem 16rem 2rem 16rem;
+}
+
+.creators-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 2rem;
+  text-align: center;
+}
+
+.creator {
+  margin: 2rem 8rem 0 8rem;
+}
+
+.creator-image {
+  height: 200px;
+  border: solid 2px #8ee4af;
+  border-radius: 50%;
+  margin: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .about-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 2rem 2rem 2rem 2rem;
+  }
+
+  .creator {
+    margin: 2rem 2rem 0 2rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .creators-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 2rem;
+    text-align: center;
+  }
+
+  .about-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 2rem 2rem 2rem 2rem;
+  }
+
+  .creator {
+    margin: 2rem 2rem 0 2rem;
+  }
+
 }

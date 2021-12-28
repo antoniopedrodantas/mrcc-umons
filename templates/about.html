@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Upload new File</title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    <title>Image Research</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
   </head>
 
   <body>
@@ -10,26 +14,30 @@
       <li class="navbar-elem"><a href="/">App</a></li>
       <li class="navbar-elem"><a href="/about">About</a></li>
     </ul>
-    <div>
+    <div class="about-text">
       <p>
         This web app was developed by António Dantas and Bernardo Moreira for
         the Multimedia Retrieval and Cloud Computing course at the University of
         Mons. The goal of the project is to develop a method that extracts
         features from an image database to later use them to compare their
-        similarity. After the cloud deployment this results in a platform the
+        similarity. After the cloud deployment this results in a platform that
         serves as an image search engine using artificial intelligence.
       </p>
     </div>
-    <div>
-      <div>
+    <div class="creators-wrapper">
+      <div class="creator">
+        <div>
+          <img class="creator-image" src="https://i.imgur.com/YgSAb8R.jpeg" />
+        </div>
         <p>António Dantas</p>
-        <p>email</p>
-        <p>github</p>
+        <p>222312@umons.ac.be</p>
       </div>
-      <div>
+      <div class="creator">
+        <div>
+          <img class="creator-image" src="https://i.imgur.com/Js5Raok.jpeg" />
+        </div>
         <p>Bernardo Moreira</p>
-        <p>email</p>
-        <p>github</p>
+        <p>222314@umons.ac.be</p>
       </div>
     </div>
   </body>
