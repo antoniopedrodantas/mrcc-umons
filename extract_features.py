@@ -73,20 +73,20 @@ def generateHistogramme_Color(filenames):
 #     print("Indexation SIFT terminée !!!!")
 
 
-def generateORB(filenames):
-    if not os.path.isdir("./descriptors/ORB"):
-        os.mkdir("./descriptors/ORB")
-    i = 0
-    for path in os.listdir(filenames):
-        img = cv2.imread(filenames+"/"+path)
-        orb = cv2.ORB_create()
-        key_point1, descrip1 = orb.detectAndCompute(img, None)
+# def generateORB(filenames):
+#     if not os.path.isdir("./descriptors/ORB"):
+#         os.mkdir("./descriptors/ORB")
+#     i = 0
+#     for path in os.listdir(filenames):
+#         img = cv2.imread(filenames+"/"+path)
+#         orb = cv2.ORB_create()
+#         key_point1, descrip1 = orb.detectAndCompute(img, None)
 
-        num_image, _ = path.split(".")
-        with open("./descriptors/ORB/"+str(num_image)+".txt", 'w+') as f:
-            np.savetxt(f ,descrip1)
-        i += 1
-    print("indexation ORB terminée !!!!")
+#         num_image, _ = path.split(".")
+#         with open("./descriptors/ORB/"+str(num_image)+".txt", 'w+') as f:
+#             np.savetxt(f ,descrip1)
+#         i += 1
+#     print("indexation ORB terminée !!!!")
 
 
 ## TP3
